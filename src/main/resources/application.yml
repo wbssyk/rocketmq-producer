@@ -6,7 +6,7 @@ rocketmq:
   producer:
     isOnOff: on
     groupName: rocketmq-shiyakun
-    namesrvAddr: 192.168.13.130:9876;192.168.13.131:9876
+    namesrvAddr: 192.168.1.200:9876;192.168.1.201:9876;192.168.1.202:9876
     maxMessageSize: 4096
     sendMsgTimeout: 3000
     retryTimesWhenSendFailed: 2

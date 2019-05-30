@@ -30,7 +30,9 @@ public class ProducerController {
 
     private static final Logger logger = LoggerFactory.getLogger(ProducerController.class);
 
-    /**使用RocketMq的生产者*/
+    /**
+     * 使用RocketMq的生产者
+     */
     @Autowired
     private DefaultMQProducer defaultMQProducer;
 
@@ -38,18 +40,18 @@ public class ProducerController {
     public void sendTag1() throws MQClientException, RemotingException, MQBrokerException, InterruptedException, UnsupportedEncodingException {
         // 创建消息，并指定Topic，Tag和消息体\
 
-            MessageTemplate messageTemplate = new MessageTemplate();
-            messageTemplate.setId(UUID.randomUUID().toString());
-            messageTemplate.setSendMessageType("Tag-1");
-            messageTemplate.setMessageinfo("测试消息队列压力");
-            Gson gson = new Gson();
-            String s = gson.toJson(messageTemplate);
-            Message msg = new Message("Topic-2" /* Topic */,
-                    "Tag-1","Key-1",
-                    s.getBytes(RemotingHelper.DEFAULT_CHARSET) /* Message body */
-            );
-            // 发送消息到一个Broker
-            SendResult sendResult = defaultMQProducer.send(msg);
+        MessageTemplate messageTemplate = new MessageTemplate();
+        messageTemplate.setId(UUID.randomUUID().toString());
+        messageTemplate.setSendMessageType("Tag-1");
+        messageTemplate.setMessageinfo("测试消息队列压力");
+        Gson gson = new Gson();
+        String s = gson.toJson(messageTemplate);
+        Message msg = new Message("Topic-1" /* Topic */,
+                "Tag-1",
+                s.getBytes(RemotingHelper.DEFAULT_CHARSET) /* Message body */
+        );
+        // 发送消息到一个Broker
+        SendResult sendResult = defaultMQProducer.send(msg);
 
 
         // 通过sendResult返回消息是否成功送达
@@ -60,21 +62,21 @@ public class ProducerController {
     @GetMapping("send_tag2")
     public void sendTag2() throws MQClientException, RemotingException, MQBrokerException, InterruptedException, UnsupportedEncodingException {
         // 创建消息，并指定Topic，Tag和消息体
-        for (int i = 0; i <10; i++) {
-            MessageTemplate messageTemplate = new MessageTemplate();
-            messageTemplate.setId(UUID.randomUUID().toString());
-            messageTemplate.setSendMessageType("Tag-2");
-            messageTemplate.setMessageinfo("测试消息队列压力"+i);
-            Gson gson = new Gson();
-            String s = gson.toJson(messageTemplate);
-            Message msg = new Message("Topic-3" /* Topic */,
-                    "Tag-2","Key-2",
-                    s.getBytes(RemotingHelper.DEFAULT_CHARSET) /* Message body */
-            );
-            // 发送消息到一个Broker
-            SendResult sendResult = defaultMQProducer.send(msg);
-        }
 
+        MessageTemplate messageTemplate = new MessageTemplate();
+        messageTemplate.setId(UUID.randomUUID().toString());
+        messageTemplate.setSendMessageType("Tag-2");
+        messageTemplate.setMessageinfo("测试消息队列压力");
+        Gson gson = new Gson();
+        String s = gson.toJson(messageTemplate);
+        Message msg = new Message("Topic-1" /* Topic */,
+                "Tag-2",
+                s.getBytes(RemotingHelper.DEFAULT_CHARSET) /* Message body */
+        );
+        // 发送消息到一个Broker
+        SendResult sendResult = defaultMQProducer.send(msg);
+
+        System.out.printf("%s%n", sendResult);
         // 如果不再发送消息，关闭Producer实例。
 
     }
